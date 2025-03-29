@@ -1,5 +1,5 @@
-import LoginForm from "@/components/Auth/login-form";
-import ThemeToggle from "@/components/ui/themeToggle";
+import LoginForm from "@/components/auth/login-form";
+import ThemeToggle from "@/components/ui/theme-toggle";
 
 export default function Home() {
   return (

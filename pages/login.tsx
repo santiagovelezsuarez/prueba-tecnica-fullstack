@@ -1,5 +1,4 @@
-import LoginForm from "@/components/Auth/login-form";
-import { signIn } from "next-auth/react";
+import LoginForm from "@/components/auth/login-form";
 
 export default function Login() {
     return (

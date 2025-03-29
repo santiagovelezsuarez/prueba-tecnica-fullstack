@@ -12,3 +12,40 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  phone     String?  @unique
+  role      Role     @default(USER)
+  password  String?
+  provider  Provider @default(CREDENTIAL)
+
+  Transactions Transaction[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Provider {
+  CREDENTIAL
+  GITHUB  
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String
+  description String
+  amount      Float
+  date        DateTime @default(now())
+  type        TransactionType
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}

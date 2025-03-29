@@ -8,7 +8,7 @@ export async function validateUserWithCredentials(credentials: UserCredentials) 
     const user = await prisma.user.findUnique({ where: { email: credentials.email } });
 
     if (!user) {
-        throw new Error("Credenciales incorrectas");
+        throw new Error("Credenciales incorrectas 1");
     }
 
     const salt = bcrypt.genSaltSync(10);

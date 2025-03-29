@@ -4,7 +4,7 @@ import UserAvatar from "../auth/user-avatar";
 
 export default function Sidebar() {
     return (
-        <aside className="w-64 bg-gray-900 text-white p-4">
+        <aside className="w-auto bg-gray-900 text-white p-4">
             <div className="flex justify-center mb-2">
                 <img src="/dalle-logo.webp" alt="Logo" className="h-20 rounded-md w-auto" />
             </div>

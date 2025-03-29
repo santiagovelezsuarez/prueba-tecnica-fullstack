@@ -33,28 +33,37 @@ export default function LoginForm() {
             {error && <p className="text-red-500 text-center">{error}</p>}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Email */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Email</label>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        Email
+                    </label>
                     <input
                         type="email"
+                        id="email"
+                        name="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         className="w-full px-3 py-2 border rounded-md focus:ring focus:ring-blue-300"
                     />
                 </div>
-
+                {/* Password */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Contraseña</label>
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                        Contraseña
+                    </label>
                     <input
                         type="password"
+                        id="password"
+                        name="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         className="w-full px-3 py-2 border rounded-md focus:ring focus:ring-blue-300"
                     />
                 </div>
-
+                {/* submit */}
                 <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md">
                     Iniciar Sesión
                 </button>

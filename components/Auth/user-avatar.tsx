@@ -13,8 +13,8 @@ export default function UserAvatar() {
                 className="w-12 h-12 rounded-full border-2 border-gray-500"
             />
             <div className="flex flex-col">
-                <span className="text-white font-semibold">{session?.user?.email || "Guest"}</span>
-                <div className="flex gap-3 justify-center">
+                <span className="text-white text-sm font-semibold">{session?.user?.email}</span>
+                <div className="mt-1 flex gap-3 justify-stretch">
                     <button
                         onClick={() => signOut()}
                         className="p-1 bg-gray-700 dark:bg-gray-800 rounded"

@@ -4,12 +4,19 @@ const prisma = new PrismaClient();
 
 const transactionsResolver = {
     Query: {
-        transactions() {
-            return prisma.transaction.findMany({   
+        transactions: async () => {
+            const transactions = await prisma.transaction.findMany({   
                 include: {
                     user: true,
-                },             
+                },
+                orderBy: {
+                    date: 'desc',
+                },         
             });
+            return transactions.map((transaction) => ({
+                ...transaction,
+                date: transaction.date.toISOString().split('T')[0],
+            }));
         },
     },
     Mutation: {

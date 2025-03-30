@@ -4,8 +4,7 @@ const userDefs = gql`
   type User {
     id: ID!
     name: String!
-    email: String!
-    phone: String
+    email: String!    
     role: Role!
   }
   

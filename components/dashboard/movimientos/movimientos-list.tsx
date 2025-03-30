@@ -1,19 +1,79 @@
-export default function MovimientosList() {
+import { Movimiento } from '@/lib/definitions';
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { formatCurrency, formatDate } from '@/lib/utils';
+
+interface MovimientosListProps {
+    movimientos: Movimiento[];
+}
+
+export default function MovimientosList({ movimientos }: MovimientosListProps) {
+    if (!movimientos || movimientos.length === 0) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <p className="text-gray-500">No hay movimientos registrados.</p>
+            </div>
+        );
+    }
     return (
-        <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200">
-                <thead>
-                    <tr>
-                        <th className="py-2 px-4 border-b">Fecha</th>
-                        <th className="py-2 px-4 border-b">Descripción</th>
-                        <th className="py-2 px-4 border-b">Monto</th>
-                        <th className="py-2 px-4 border-b">Tipo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {/* Aquí puedes mapear tus datos */}
-                </tbody>
-            </table>
-        </div>
+        <Table>
+            <TableHeader>
+                <TableRow className="">
+                    <TableCell className="py-2 px-4 border-b font-bold text-md text-left">Monto</TableCell>
+                    <TableCell className="py-2 px-4 border-b font-bold text-md text-left">Fecha</TableCell>
+                    <TableCell className="py-2 px-4 border-b font-bold text-md text-left">Concepto</TableCell>
+                    <TableCell className="py-2 px-4 border-b font-bold text-md text-left">Usuario</TableCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {movimientos.map((mov, index) => (
+                    <TableRow key={index} >
+                        <TableCell>
+                            {mov.description}
+                        </TableCell>
+                        <TableCell className={mov.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}>
+                            {formatCurrency(mov.amount)}
+                        </TableCell>
+                        <TableCell>
+                            {formatDate(mov.date)}
+                        </TableCell>
+                        <TableCell>
+                            {mov.user.email}
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+            <TableFooter>
+                <TableRow>
+                    <TableCell colSpan={4} className={`text-end font-bold text-lg ${(() => {
+                        const total = movimientos.reduce((acc, mov) => {
+                            return mov.type === 'INCOME' 
+                                ? acc + mov.amount 
+                                : acc - mov.amount;
+                        }, 0);
+                        return total > 0 
+                            ? 'text-green-700' 
+                            : total < 0 
+                            ? 'text-red-700' 
+                            : 'text-gray-500';
+                    })()}`}>
+                        <span className='mx-2'>Total:</span>
+                        {formatCurrency(movimientos.reduce((acc, mov) => {
+                            return mov.type === 'INCOME' 
+                                ? acc + mov.amount 
+                                : acc - mov.amount;
+                        }, 0))}
+                    </TableCell>
+                </TableRow>
+            </TableFooter>
+        </Table>
     );
 }

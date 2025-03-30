@@ -26,3 +26,25 @@ export const addTransaction = async (formData: any) => {
         type,
     });
 };
+
+
+
+export const getTransactions = async () => {
+    const query = `
+        query Transactions {
+            transactions {
+                id
+                amount
+                date
+                description
+                type
+                user {
+                    id
+                    email
+                }
+            }
+        }
+    `;
+
+    return fetchGraphQL(query, {});
+};

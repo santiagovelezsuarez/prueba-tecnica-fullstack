@@ -10,3 +10,21 @@ export interface CrearMovimiento {
     type: 'INCOME' | 'EXPENSE';    
 }
 
+export interface Movimiento {
+    id: string;
+    amount: number;
+    date: string;
+    description?: string;
+    type: 'INCOME' | 'EXPENSE';
+    user: User;
+}
+
+export interface User {
+    id: string;
+    name: string;
+    email: string;
+    role: 'ADMIN' | 'USER';
+    image?: string;
+}
+
+

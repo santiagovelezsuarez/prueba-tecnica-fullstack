@@ -6,12 +6,14 @@ const prisma = new PrismaClient()
 async function main() {
     const salt = bcrypt.genSaltSync(10);
 
-    prisma.user.createMany({
+    const response = await prisma.user.createMany({
         data: [
             { name: 'admin', email: 'admin@mail.co', password: bcrypt.hashSync("admin", salt), role: 'ADMIN' },
-            { name: 'user', email: 'user@mail.co', password: bcrypt.hashSync("user", salt), role: 'USER' },
+            { name: 'user', email: 'user@mail.co', password: bcrypt.hashSync("user", salt), role: 'USER'  },
         ]
     });    
+
+    console.log("seed affected rows:", response);
 }
 main()
     .then(async () => {

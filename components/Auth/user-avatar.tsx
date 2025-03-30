@@ -1,9 +1,12 @@
 import { signOut, useSession } from "next-auth/react";
 import ThemeToggle from "../ui/theme-toggle";
 
+
 export default function UserAvatar() {
 
-    const { data: session } = useSession();
+    const { data: session } = useSession();   
+
+    console.log("User session:", session);  
 
     return (
         <div className="flex items-center space-x-4 p-2 bg-gray-800 rounded-lg shadow-md">

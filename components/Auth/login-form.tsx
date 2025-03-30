@@ -65,7 +65,7 @@ export default function LoginForm() {
                 </div>
                 {/* submit */}
                 <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md">
-                    Iniciar Sesión
+                    Iniciar sesión
                 </button>
             </form>
             <div className="flex items-center my-4">
@@ -75,7 +75,7 @@ export default function LoginForm() {
             </div>
             <div className="mt-4">
                 <button
-                    onClick={() => signIn("github", { redirectTo: "/dashboard/" })}
+                    onClick={() => signIn("github", { callbackUrl: "/dashboard/" })}
                     className="w-full flex items-center justify-center bg-gray-800 text-white py-2 rounded-md"
                 >
                     <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">

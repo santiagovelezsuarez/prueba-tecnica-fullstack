@@ -4,7 +4,7 @@ import NewMovimientoForm from "@/components/dashboard/movimientos/new-movimiento
 export default function Movimientos() {
     return (
         <DashboardLayout>
-            <div className="flex justify-center mb-10">
+            <div className="flex justify-center mb-5">
                 <h1 className="text-4xl">
                     Sistema de gestión de ingresos y egresos
                 </h1>
@@ -14,7 +14,7 @@ export default function Movimientos() {
             </h2>
             <hr />
             <div className="flex flex-col gap-4 mt-4">
-                <div className="p-8 m-28 shadow-md rounded-lg border border-gray-300 max-w-xl mx-auto">
+                <div className="p-8 shadow-md rounded-lg border border-gray-300 max-w-xl mx-auto">
                     <NewMovimientoForm />
                 </div>
             </div>

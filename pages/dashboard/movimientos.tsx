@@ -12,9 +12,9 @@ export default function Movimientos() {
             <h2 className="text-2xl">
                 Ingresos y egresos
             </h2>
-            <hr />
-            <div className="flex flex-col gap-4 mt-4">
-                <div className="p-8 shadow-md rounded-lg border border-gray-300 max-w-xl mx-auto">
+            <hr className="my-2" />
+            <div className="flex flex-col mt-8">
+                <div className="p-10 shadow-md rounded-lg border border-gray-300 max-w-xl mx-auto">
                     <NewMovimientoForm />
                 </div>
             </div>

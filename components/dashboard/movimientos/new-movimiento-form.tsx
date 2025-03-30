@@ -1,3 +1,5 @@
+import { addTransaction } from '@/lib/actions/movimientos.action';
+import clsx from 'clsx';
 import { useState } from 'react';
 
 export default function NewMovimientoForm() {
@@ -6,8 +8,11 @@ export default function NewMovimientoForm() {
         description: '',
         amount: '',
         type: selectedType,
-        date: ''
+        date: new Date().toISOString().split('T')[0]
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     const handleTypeChange = (type: 'INCOME' | 'EXPENSE') => {
         setSelectedType(type);
@@ -21,88 +26,82 @@ export default function NewMovimientoForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const { description, amount, type, date } = formData;
+        setIsSubmitting(true);
+        setErrorMessage(null);
+        setSuccessMessage(null);
         
-        console.log('Form data:', { description, amount, type, date });
-
-        // peticion a la API GraphQL
-        const res = await fetch('/api/graphql', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                query: `
-                    mutation {
-                        addTransaction(amount: ${amount}, date: "${new Date(date).toISOString()}", description: "${description}", type: ${type}) {
-                            id
-                            amount
-                            date
-                            description
-                            type
-                        }
-                    }
-                `,
-            }),
+        addTransaction(formData)
+        .then((res) => {            
+            setSuccessMessage('Movimiento registrado correctamente!');
+            setFormData({
+                description: '',
+                amount: '',
+                type: selectedType,
+                date:  new Date().toISOString().split('T')[0]
+            });
+        })
+        .catch((error) => {            
+            setErrorMessage(error.message || 'Error al registrar el movimiento.');
+            setIsSubmitting(false);
+            return;
+        })
+        .finally(() => {
+            setIsSubmitting(false);
         });
-
-        const data = await res.json();
-        if (data.errors) {
-            console.error('Error:', data.errors);
-        }
-        if (data.data) {
-            console.log('Transaction added:', data.data.addTransaction);
-        }
     };
 
     return (
         <div className="flex flex-col gap-4 min-w-96">
             <h2 className="text-xl font-bold">Nuevo movimiento de dinero</h2>
+            {errorMessage && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <span className="block sm:inline">{errorMessage}</span>
+                </div>
+            )}
+            {successMessage && (
+                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <span className="block sm:inline">{successMessage}</span>
+                </div>
+            )}
             <form onSubmit={handleSubmit}>
                 {/* tipo de movimiento */}
                 <div className='m-2'>
-                    <label htmlFor="type" className="block text-lg font-medium text-gray-700 mt-4">
+                    <label htmlFor="type" className="block text-lg font-medium text-gray-700 dark:text-gray-200">
                         Tipo de movimiento
                     </label>
-                    <div className="mt-1 flex items-center gap-4">
+                    <div className="flex items-center gap-4">
                         <button
                             type="button"
-                            className={`px-2 py-1 text-sm rounded-md shadow-sm ${selectedType === 'INCOME'
-                                ? 'bg-blue-500 text-white'
-                                : 'bg-gray-500 text-white'
+                            className={`px-4 py-2 rounded-md shadow-sm transition-colors duration-200 ${selectedType === 'INCOME'
+                                    ? 'bg-green-500 text-white hover:bg-green-600'
+                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                 }`}
                             onClick={() => handleTypeChange('INCOME')}
+                            aria-pressed={selectedType === 'INCOME'}
                         >
                             Ingreso
                         </button>
                         <button
                             type="button"
-                            className={`px-2 py-1 text-sm rounded-md shadow-sm ${selectedType === 'EXPENSE'
-                                ? 'bg-blue-500 text-white'
-                                : 'bg-gray-500 text-white'
+                            className={`px-4 py-2 rounded-md shadow-sm transition-colors duration-200 ${selectedType === 'EXPENSE'
+                                    ? 'bg-red-500 text-white hover:bg-red-600'
+                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                 }`}
                             onClick={() => handleTypeChange('EXPENSE')}
+                            aria-pressed={selectedType === 'EXPENSE'}
                         >
                             Egreso
                         </button>
-                    </div>
-                    <input
-                        type="hidden"
-                        id="type"
-                        name="type"
-                        value={selectedType}
-                        required
-                    />
+                    </div>                    
                 </div>
                 {/* monto */}
                 <div className='m-2'>
-                    <label htmlFor="amount" className="block text-lg font-medium text-gray-700">
+                    <label htmlFor="amount" className="block text-lg font-medium text-gray-700 dark:text-gray-200">
                         Monto
                     </label>
                     <input
                         type="number"
-                        min={0}
-                        step="1000"
+                        min={0}                        
                         id="amount"
                         name="amount"
                         value={formData.amount}
@@ -113,7 +112,7 @@ export default function NewMovimientoForm() {
                 </div>
                 {/* concepto */}
                 <div className='m-2'>
-                    <label htmlFor="description" className="block text-lg font-medium text-gray-700">
+                    <label htmlFor="description" className="block text-lg font-medium text-gray-700 dark:text-gray-200">
                         Concepto
                     </label>
                     <input
@@ -128,7 +127,7 @@ export default function NewMovimientoForm() {
                 </div>
                 {/* fecha */}
                 <div className='m-2'>
-                    <label htmlFor="date" className="block text-lg font-medium text-gray-700">
+                    <label htmlFor="date" className="block text-lg font-medium text-gray-700 dark:text-gray-200">
                         Fecha
                     </label>
                     <input
@@ -142,9 +141,14 @@ export default function NewMovimientoForm() {
                     />
                 </div>
                 {/* submit */}
-                <div className='m-2'>
-                    <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md">
-                        Registrar movimiento
+                <div className='m-2 mt-4'>
+                    <button type="submit" 
+                        className={clsx("w-full bg-blue-500 text-white py-2 rounded-md", {
+                            'opacity-50 cursor-not-allowed': isSubmitting
+                        })}
+                        disabled={isSubmitting}
+                       >
+                        {isSubmitting ? 'Registrando...' : 'Registrar movimiento'}                         
                     </button>
                 </div>
             </form>

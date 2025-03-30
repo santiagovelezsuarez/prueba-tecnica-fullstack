@@ -13,14 +13,14 @@ export default function UserAvatar() {
             <img
                 src={session?.user?.image ?? "https://i.pravatar.cc/300"}
                 alt="User Avatar"
-                className="w-12 h-12 rounded-full border-2 border-gray-500"
+                className="w-14 h-14 rounded-full border-2 border-gray-500"
             />
             <div className="flex flex-col">
-                <span className="text-white text-sm font-semibold">{session?.user?.email}</span>
+                <span className="text-white text-md font-semibold">{session?.user?.email}</span>
                 <div className="mt-1 flex gap-3 justify-stretch">
                     <button
                         onClick={() => signOut()}
-                        className="p-1 bg-gray-700 dark:bg-gray-800 rounded"
+                        className="p-0.5 bg-gray-700 dark:bg-gray-800 rounded"
                         title="Sign Out"
                     >
                         <svg

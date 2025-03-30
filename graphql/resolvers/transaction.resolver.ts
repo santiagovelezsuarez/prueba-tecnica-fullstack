@@ -15,8 +15,7 @@ const transactionsResolver = {
     Mutation: {
         addTransaction: async (_: any, { amount, date, description, type }: any, context: any) => {           
             const { session } = context;    
-            if (!session || !session.user?.id) {
-                console.log('No session found:', session);
+            if (!session || !session.user?.id) {                
                 throw new Error('No autorizado. Debes iniciar sesión.');
             }            
             const newTransaction = await prisma.transaction.create({
@@ -27,8 +26,7 @@ const transactionsResolver = {
                     date,
                     type,
                 },
-            });
-            console.log('New transaction created:', newTransaction);
+            });            
             return newTransaction;
         }
     },

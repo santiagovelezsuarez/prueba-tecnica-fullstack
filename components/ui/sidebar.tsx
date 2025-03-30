@@ -11,7 +11,7 @@ export default function Sidebar() {
             <nav className="mt-4">
                 <ul>
                     <li>
-                        <Link href="dashboard/movimientos">
+                        <Link href="/dashboard/movimientos">
                             <span className="block p-2 hover:bg-gray-700 rounded">
                                 Ingresos y egresos
                             </span>

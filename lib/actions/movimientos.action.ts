@@ -27,12 +27,10 @@ export const addTransaction = async (formData: any) => {
     });
 };
 
-
-
-export const getTransactions = async () => {
+export const getTransactions = async (startDate?: string, endDate?: string) => {
     const query = `
-        query Transactions {
-            transactions {
+        query Transactions($startDate: String, $endDate: String) {
+            transactions(startDate: $startDate, endDate: $endDate) {
                 id
                 amount
                 date
@@ -45,6 +43,10 @@ export const getTransactions = async () => {
             }
         }
     `;
+    
+    const variables: Record<string, string | undefined> = {};
+    if (startDate) variables.startDate = startDate;
+    if (endDate) variables.endDate = endDate;
 
-    return fetchGraphQL(query, {});
+    return fetchGraphQL(query, variables);
 };

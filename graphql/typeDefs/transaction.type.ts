@@ -13,7 +13,7 @@ const transactionDefs = gql`
   enum TransactionType { INCOME EXPENSE }
 
   type Query {
-    transactions: [Transaction!]!
+    transactions(startDate: String, endDate: String): [Transaction!]!
   }
 
   type Mutation {

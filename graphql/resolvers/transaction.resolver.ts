@@ -4,14 +4,31 @@ const prisma = new PrismaClient();
 
 const transactionsResolver = {
     Query: {
-        transactions: async () => {
-            const transactions = await prisma.transaction.findMany({   
-                include: {
-                    user: true,
-                },
-                orderBy: {
-                    date: 'desc',
-                },         
+        transactions: async (_: any, { startDate, endDate }: { startDate?: string, endDate?: string }, context: any) => {
+            const whereClause: Record<string, any> = {};
+
+            const filters: Record<string, Date> = {};
+
+            if (startDate) {
+                const start = new Date(startDate);
+                if (!isNaN(start.getTime())) 
+                    filters.gte = start;                
+            }
+
+            if (endDate) {
+                const end = new Date(endDate);
+                if (!isNaN(end.getTime()))
+                    filters.lte = end;                
+            }
+
+            if (Object.keys(filters).length > 0)
+                whereClause.date = filters;
+            
+
+            const transactions = await prisma.transaction.findMany({
+                where: Object.keys(whereClause).length ? whereClause : undefined,
+                include: { user: true },
+                orderBy: { date: 'desc' },
             });
             return transactions.map((transaction) => ({
                 ...transaction,
@@ -20,20 +37,20 @@ const transactionsResolver = {
         },
     },
     Mutation: {
-        addTransaction: async (_: any, { amount, date, description, type }: any, context: any) => {           
-            const { session } = context;    
-            if (!session || !session.user?.id) {                
+        addTransaction: async (_: any, { amount, date, description, type }: any, context: any) => {
+            const { session } = context;
+            if (!session || !session.user?.id) {
                 throw new Error('No autorizado. Debes iniciar sesión.');
-            }            
+            }
             const newTransaction = await prisma.transaction.create({
-                data: {                                   
+                data: {
                     userId: session.user.id,
                     description,
                     amount,
                     date,
                     type,
                 },
-            });            
+            });
             return newTransaction;
         }
     },

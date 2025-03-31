@@ -19,6 +19,12 @@ export interface Movimiento {
     user: User;
 }
 
+export interface ReporteMovimientos {
+    date: string;
+    income: number;
+    expense: number;
+}
+
 export interface User {
     id: string;
     name: string;

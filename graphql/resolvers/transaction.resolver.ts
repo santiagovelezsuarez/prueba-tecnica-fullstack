@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const transactionsResolver = {
     Query: {
-        transactions: hasRole(["ADMIN"], async (_: any, { startDate, endDate }: any, contextValue: any) => {                           
+        transactions: async (_: any, { startDate, endDate }: any, contextValue: any) => {                           
             const whereClause: Record<string, any> = {};
 
             const filters: Record<string, Date> = {};
@@ -35,7 +35,7 @@ const transactionsResolver = {
                 ...transaction,
                 date: transaction.date.toISOString().split('T')[0],
             }));
-        }),
+        },
     },
     Mutation: {
         addTransaction: async (_: any, { amount, date, description, type }: any, context: any) => {

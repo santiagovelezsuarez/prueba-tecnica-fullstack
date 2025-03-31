@@ -43,7 +43,6 @@ export function groupTransactionsByDate(transactions: Movimiento[]) {
   }, {});
 }
 
-
 export const fetchGraphQL = async (query: string, variables: Record<string, any>, cookies?: string) => {
   try {          
       const headers: Record<string, string> = {

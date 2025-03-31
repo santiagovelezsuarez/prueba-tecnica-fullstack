@@ -9,7 +9,7 @@ const userResolvers = {
       const users = await prisma.user.findMany({
         orderBy: { createdAt: 'desc' },
       });
-      return users.map((user) => ({
+      return users.map((user: any) => ({
         ...user,
         createdAt: user.createdAt.toISOString().split('T')[0],
       }));

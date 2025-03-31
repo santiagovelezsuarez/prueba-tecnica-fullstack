@@ -12,8 +12,7 @@ interface UsersListProps {
     users: User[];
 }
 
-export default function UsersList({ users }: UsersListProps) {
-    console.log('UsersList', users);
+export default function UsersList({ users }: UsersListProps) {    
     if (!users || users.length === 0) {
         return (
             <div className="flex justify-center items-center h-64">

@@ -52,10 +52,10 @@ export const fetchGraphQL = async (query: string, variables: Record<string, any>
       if (cookies) {
         headers['Cookie'] = cookies;
       }
-      if (!process.env.API_GRAPHQL_URL) {
+      if (!process.env.NEXT_PUBLIC_API_GRAPHQL_URL) {
           throw new Error("API_GRAPHQL_URL is not defined in the environment variables.");
       }
-      const res = await fetch(process.env.API_GRAPHQL_URL, {
+      const res = await fetch(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, {
           method: 'POST',
           headers,
           credentials: "include",          

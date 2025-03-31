@@ -1,8 +1,7 @@
 import { fetchGraphQL } from "../utils";
 
 
-export const addTransaction = async (formData: any) => {
-    const cookies = document.cookie;
+export const addTransaction = async (formData: any) => {    
     const { description, amount, type, date } = formData;
 
     if (!description || !amount || !date) {
@@ -26,7 +25,7 @@ export const addTransaction = async (formData: any) => {
         date: new Date(date).toISOString(),
         description,
         type,
-    }, cookies);
+    });
 };
 
 export const getTransactions = async (cookies?: string, startDate?: string, endDate?: string) => {

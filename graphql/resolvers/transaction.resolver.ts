@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-import { hasRole } from '@/graphql/helpers';
+import { PrismaClient, Transaction } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -31,7 +30,7 @@ const transactionsResolver = {
                 include: { user: true },
                 orderBy: { date: 'desc' },
             });
-            return transactions.map((transaction) => ({
+            return transactions.map((transaction: Transaction) => ({
                 ...transaction,
                 date: transaction.date.toISOString().split('T')[0],
             }));

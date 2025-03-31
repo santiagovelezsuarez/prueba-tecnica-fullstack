@@ -14,15 +14,17 @@ export const authOptions = {
     strategy: "jwt" as const
   },  
   callbacks: {
-    async jwt({ token, user }: { token: any; user?: { id: string } }) {     
+    async jwt({ token, user }: { token: any; user?: { id: string, role?: string } }) {     
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {      
       if (session.user) {
         session.user.id = token.id;
+        session.user.role = token.role;
       }
       return session;
     }
@@ -45,7 +47,8 @@ export const authOptions = {
         return {
           id: user.id,
           name: user.name || user.email,
-          email: user.email          
+          email: user.email,
+          role: user.role,         
         };
       },
     })

@@ -31,8 +31,9 @@ export default function Movimientos({ movimientos }: MovimientosListProps) {
     )
 }
 
-export async function getServerSideProps() {
-    const data = await getTransactions();
+export async function getServerSideProps(context: any) {
+    const cookies = context.req.headers.cookie || "";
+    const data = await getTransactions(cookies);    
 
     return {
         props: { movimientos: data.transactions },

@@ -1,3 +1,55 @@
+## Configuración del Entorno Local
+Este documento proporciona instrucciones paso a paso para configurar y ejecutar la aplicación en un entorno local.
+
+Requisitos Previos
+
+- Node.js (versión recomendada: 16.x o superior)
+- PostgreSQL
+- Una cuenta en GitHub (para autenticación OAuth)
+
+### Instalación
+- Instalar dependencias
+```bash
+$ npm install
+```
+- Crear archivo .env.local en la raiz y generar hash Next Auth Secret
+```bash
+$ openssl rand -base64 32
+```
+- Configurar Github como proveedor OAuth
+- ir a github, developer settings, OAuth Apps y crear una nueva OAuth App
+```bash
+  Homepage URL
+  http://localhost:3000
+
+  Authorization callback URL
+  http://localhost:3000/api/auth/callback/github
+```
+- Copiar la llave Client secret en la variable de entorno AUTH_GITHUB_SECRET
+- Copiar el Client ID en la variable de entorno AUTH_GITHUB_ID
+
+- Database: para crear la base de datos en PostgreSQL debemos crear el archivo .env con la cadena de conexion
+```bash
+$ DATABASE_URL=postgresql://[user]:[password]@[server]:5432/postgres
+```
+
+- Ejecutar migraciones
+ ```bash
+$ npx prima migrate 
+$ npx prisma generate  
+# Seed the database
+$ npx prisma db seed
+``` 
+
+- Ejecutar pruebas:  
+```bash
+$  npm run test
+```
+- Ejecutar app en modo desarrollo
+```bash
+$  npm run dev
+```
+
 ## Prueba Técnica para Desarrollador Fullstack
 
 ### Introducción

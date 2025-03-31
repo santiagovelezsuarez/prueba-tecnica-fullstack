@@ -12,6 +12,11 @@ const userDefs = gql`
 
   type Query {
     users: [User!]!
+    user(id: ID!): User!
+  }
+
+  type Mutation {    
+    updateUser(id: ID!, name: String, role: Role): User!    
   }
 `;
 

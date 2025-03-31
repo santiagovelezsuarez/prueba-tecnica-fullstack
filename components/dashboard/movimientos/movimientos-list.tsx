@@ -1,15 +1,13 @@
 import { Movimiento } from '@/lib/definitions';
 import {
     Table,
-    TableBody,
-    TableCaption,
+    TableBody,    
     TableCell,
-    TableFooter,
-    TableHead,
+    TableFooter,    
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { calculateTotal, formatCurrency, formatDate } from '@/lib/utils';
 
 interface MovimientosListProps {
     movimientos: Movimiento[];
@@ -27,9 +25,9 @@ export default function MovimientosList({ movimientos }: MovimientosListProps) {
         <Table>
             <TableHeader>
                 <TableRow className="">
+                    <TableCell className="py-2 px-4 border-b font-bold text-md text-left">Concepto</TableCell>
                     <TableCell className="py-2 px-4 border-b font-bold text-md text-left">Monto</TableCell>
                     <TableCell className="py-2 px-4 border-b font-bold text-md text-left">Fecha</TableCell>
-                    <TableCell className="py-2 px-4 border-b font-bold text-md text-left">Concepto</TableCell>
                     <TableCell className="py-2 px-4 border-b font-bold text-md text-left">Usuario</TableCell>
                 </TableRow>
             </TableHeader>
@@ -54,11 +52,7 @@ export default function MovimientosList({ movimientos }: MovimientosListProps) {
             <TableFooter>
                 <TableRow>
                     <TableCell colSpan={4} className={`text-end font-bold text-lg ${(() => {
-                        const total = movimientos.reduce((acc, mov) => {
-                            return mov.type === 'INCOME' 
-                                ? acc + mov.amount 
-                                : acc - mov.amount;
-                        }, 0);
+                        const total = calculateTotal(movimientos);
                         return total > 0 
                             ? 'text-green-700' 
                             : total < 0 

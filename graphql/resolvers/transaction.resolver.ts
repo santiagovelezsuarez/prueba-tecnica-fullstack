@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
+import { hasRole } from '@/graphql/helpers';
 
 const prisma = new PrismaClient();
 
 const transactionsResolver = {
     Query: {
-        transactions: async (_: any, { startDate, endDate }: { startDate?: string, endDate?: string }, context: any) => {
+        transactions: hasRole(["ADMIN"], async (_: any, { startDate, endDate }: any, contextValue: any) => {                           
             const whereClause: Record<string, any> = {};
 
             const filters: Record<string, Date> = {};
@@ -34,11 +35,11 @@ const transactionsResolver = {
                 ...transaction,
                 date: transaction.date.toISOString().split('T')[0],
             }));
-        },
+        }),
     },
     Mutation: {
         addTransaction: async (_: any, { amount, date, description, type }: any, context: any) => {
-            const { session } = context;
+            const { session } = context;            
             if (!session || !session.user?.id) {
                 throw new Error('No autorizado. Debes iniciar sesión.');
             }

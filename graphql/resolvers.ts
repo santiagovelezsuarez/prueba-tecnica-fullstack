@@ -7,6 +7,7 @@ const resolvers = {
     ...transactionResolvers.Query,
   },
   Mutation: {
+    ...userResolvers.Mutation,
     ...transactionResolvers.Mutation,    
   },
 };

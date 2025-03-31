@@ -1,22 +1,25 @@
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import { getTransactions } from "@/lib/actions/movimientos.action";
 import { ReporteMovimientos } from "@/lib/definitions";
-import { formatCurrency } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { formatCurrency, groupTransactionsByDate } from "@/lib/utils";
+import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 interface MovimientosListProps {
-    movimientos: ReporteMovimientos[];
-    saldo: number;
+    movimientos: ReporteMovimientos[]
+    saldo: number
 }
 
-export default function Reportes({ movimientos, saldo }: MovimientosListProps) {
+export default function Reportes({ movimientos, saldo }: MovimientosListProps) {       
 
-    const [startDate, setStartDate] = useState<string>('');
-    const [endDate, setEndDate] = useState<string>('');
+    const [startDate, setStartDate] = useState<string>('')
+    const [endDate, setEndDate] = useState<string>('')
 
-    const router = useRouter();
+    const router = useRouter()
 
     const handleFilter = () => {
         router.push({
@@ -106,22 +109,22 @@ export default function Reportes({ movimientos, saldo }: MovimientosListProps) {
     );
 }
 export async function getServerSideProps(context: any) {
+
+    const session = await getServerSession(context.req, context.res, authOptions);
+    const isAdmin = session?.user?.role === 'ADMIN';
+    if (!isAdmin) {
+        return {
+            redirect: {
+                destination: '/dashboard/unauthorized',
+                permanent: false,
+            },
+        };
+    }
     
     const { startDate, endDate } = context.query;
     const data = await getTransactions(startDate, endDate);
 
-    const groupedData = data.transactions.reduce((acc: any, transaction: any) => {
-        const date = transaction.date;
-        if (!acc[date]) {
-            acc[date] = { income: 0, expense: 0 };
-        }
-        if (transaction.type === 'INCOME') {
-            acc[date].income += transaction.amount;
-        } else {
-            acc[date].expense += transaction.amount;
-        }
-        return acc;
-    }, {});
+    const groupedData = groupTransactionsByDate(data.transactions);
 
     const formattedData = Object.entries(groupedData).map(([date, values]: [string, any]) => ({
         date,

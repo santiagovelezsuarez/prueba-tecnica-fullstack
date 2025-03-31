@@ -27,7 +27,7 @@ export const addTransaction = async (formData: any) => {
     });
 };
 
-export const getTransactions = async (startDate?: string, endDate?: string) => {
+export const getTransactions = async (cookies?: string, startDate?: string, endDate?: string) => {
     const query = `
         query Transactions($startDate: String, $endDate: String) {
             transactions(startDate: $startDate, endDate: $endDate) {
@@ -48,5 +48,5 @@ export const getTransactions = async (startDate?: string, endDate?: string) => {
     if (startDate) variables.startDate = startDate;
     if (endDate) variables.endDate = endDate;
 
-    return fetchGraphQL(query, variables);
+    return fetchGraphQL(query, variables, cookies);
 };

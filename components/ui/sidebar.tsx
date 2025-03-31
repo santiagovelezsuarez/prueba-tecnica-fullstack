@@ -1,5 +1,5 @@
 import Link from "next/link";
-import UserAvatar from "../auth/user-avatar";
+import UserAvatar from "@/components/auth/user-avatar";
 
 export default function Sidebar() {
     return (

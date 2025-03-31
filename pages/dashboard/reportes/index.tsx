@@ -122,7 +122,8 @@ export async function getServerSideProps(context: any) {
     }
     
     const { startDate, endDate } = context.query;
-    const data = await getTransactions(startDate, endDate);
+    const cookies = context.req.headers.cookie || "";
+    const data = await getTransactions(cookies, startDate, endDate);
 
     const groupedData = groupTransactionsByDate(data.transactions);
 

@@ -30,7 +30,7 @@ const transactionsResolver = {
                 include: { user: true },
                 orderBy: { date: 'desc' },
             });
-            return transactions.map((transaction: Transaction) => ({
+            return transactions.map((transaction: any) => ({
                 ...transaction,
                 date: transaction.date.toISOString().split('T')[0],
             }));

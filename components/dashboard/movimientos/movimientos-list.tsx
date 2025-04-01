@@ -21,6 +21,8 @@ export default function MovimientosList({ movimientos }: MovimientosListProps) {
             </div>
         );
     }
+    const total = calculateTotal(movimientos);
+
     return (
         <Table>
             <TableHeader>
@@ -51,8 +53,7 @@ export default function MovimientosList({ movimientos }: MovimientosListProps) {
             </TableBody>
             <TableFooter>
                 <TableRow>
-                    <TableCell colSpan={4} className={`text-end font-bold text-lg ${(() => {
-                        const total = calculateTotal(movimientos);
+                    <TableCell colSpan={4} className={`text-end font-bold text-lg ${(() => {                        
                         return total > 0 
                             ? 'text-green-700' 
                             : total < 0 
@@ -60,11 +61,7 @@ export default function MovimientosList({ movimientos }: MovimientosListProps) {
                             : 'text-gray-500';
                     })()}`}>
                         <span className='mx-2'>Total:</span>
-                        {formatCurrency(movimientos.reduce((acc, mov) => {
-                            return mov.type === 'INCOME' 
-                                ? acc + mov.amount 
-                                : acc - mov.amount;
-                        }, 0))}
+                        {formatCurrency(total)}
                     </TableCell>
                 </TableRow>
             </TableFooter>

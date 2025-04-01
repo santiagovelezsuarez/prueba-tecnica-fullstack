@@ -36,10 +36,15 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
     "@types/cors": "^2.8.17",
     "@types/node": "22.13.14",
     "@types/react": "19.0.12",
     "eslint": "^8",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "prettier": "^3.5.3",
     "prisma": "^5.14.0",
